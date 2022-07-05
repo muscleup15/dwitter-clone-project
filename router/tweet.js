@@ -1,34 +1,16 @@
 import express from 'express';
-import { tweets } from '../data/tweet.js';
+import * as tweetController from '../controller/tweet.js';
 const route = express.Router();
 route.use(express.json());
 
-route.get('/', (req, res, err) => {
-  const username = req.query.username;
-  const data = username
-    ? tweets.filter((t) => t.username === username)
-    : tweets;
-  res.status(200).json(data);
-});
+route.get('/', tweetController.getAllTweets);
 
-route.get('/:id', (req, res, err) => {
-  const id = req.params.id;
-  const data = tweets.find((t) => t.id == id);
-  res.status(200).json(data);
-});
+route.get('/:id', tweetController.getTweetById);
 
-route.post('/:id', (req, res, err) => {
-  const tweet = req.body;
-  const newtweets = [...tweets, tweet];
-  res.status(201).json(newtweets);
-});
+route.post('/:id', tweetController.createTweet);
 
-route.put('/:id', (req, res, next) => {
-  const text = req.body.text;
-  const id = req.params.id;
-  const data = tweets.find((t) => t.id == id);
-  data.text = text;
-  res.status(201).json(data);
-});
+route.put('/:id', tweetController.updateTweet);
+
+route.delete('/:id', tweetController.deleteTweet);
 
 export default route;

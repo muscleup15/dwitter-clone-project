@@ -1,10 +1,10 @@
-export const users = [
+export let tweets = [
   {
     id: 1,
     text: 'hello',
     createAt: Date,
     name: 'panghwi',
-    username: 'an',
+    username: 'panghwi',
     //url: string(optional),
   },
   {
@@ -12,7 +12,7 @@ export const users = [
     text: 'hi',
     createAt: Date,
     name: 'kwanghwi',
-    username: 'Ahn',
+    username: 'kwanghwi',
     //url: string(optional),
   },
 ];

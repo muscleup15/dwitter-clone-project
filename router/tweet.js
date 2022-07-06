@@ -1,6 +1,7 @@
 import express from 'express';
-import * as tweetController from '../controller/tweet.js';
 import 'express-async-errors';
+import * as tweetController from '../controller/tweet.js';
+import { validate } from '../middleware/validator.js';
 const route = express.Router();
 route.use(express.json());
 
@@ -8,7 +9,12 @@ route.get('/', tweetController.getTweets);
 
 route.get('/:id', tweetController.getTweet);
 
-route.post('/:id', tweetController.createTweet);
+route.post(
+  '/:id',
+  body('text').trim().isLength({ min: 3 }),
+  validate,
+  tweetController.createTweet
+);
 
 route.put('/:id', tweetController.updateTweet);
 

@@ -9,6 +9,7 @@ route.get('/', (req, res, err) => {
   const data = username
     ? tweetRepository.getTweetByUsername(username)
     : tweetRepository.getAllTweets();
+  console.log(data);
   res.status(200).json(data);
 });
 

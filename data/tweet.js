@@ -17,19 +17,19 @@ export let tweets = [
   },
 ];
 
-export function getAllTweets() {
+export async function getAllTweets() {
   return tweets;
 }
 
-export function getTweetByUsername(username) {
+export async function getTweetByUsername(username) {
   return tweets.filter((t) => t.username === username);
 }
 
-export function getTweetById(id) {
+export async function getTweetById(id) {
   return tweets.find((t) => t.id == id);
 }
 
-export function create(text, username) {
+export async function create(text, username) {
   const tweet = {
     id: Date.now().toString(),
     text,

@@ -29,7 +29,7 @@ export function getTweetById(id) {
   return tweets.find((t) => t.id == id);
 }
 
-export function createTweet(text, username) {
+export function create(text, username) {
   const tweet = {
     id: Date.now().toString(),
     text,
@@ -40,14 +40,12 @@ export function createTweet(text, username) {
   return tweet;
 }
 
-export function updateTweet(id, text) {
+export function update(id, text) {
   const data = tweets.find((t) => t.id == id);
   data.text = text;
   return data;
 }
 
-export function deleteTweet(id) {
-  const num = tweets.findIndex((t) => t.id == id);
-  tweets.splice(num, 1);
-  res.sendStatus(204);
+export function remove(id) {
+  tweets = tweets.filter((tweet) => tweet.id != id);
 }

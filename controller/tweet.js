@@ -1,39 +1,47 @@
 import express from 'express';
-import { tweets } from '../data/tweet.js';
+import * as tweetRepository from '../data/tweet.js';
+import 'express-async-errors';
 const route = express.Router();
 route.use(express.json());
 
-export async function getAllTweets(req, res, err) {
+export function getTweets(req, res, err) {
   const username = req.query.username;
   const data = username
-    ? tweets.filter((t) => t.username === username)
-    : tweets;
+    ? tweetRepository.getTweetByUsername(username)
+    : tweetRepository.getAllTweets();
   res.status(200).json(data);
 }
 
-export async function getTweetById(req, res, err) {
+export function getTweet(req, res, err) {
   const id = req.params.id;
-  const data = tweets.find((t) => t.id == id);
-  res.status(200).json(data);
+  const tweet = tweetRepository.getTweetById(id);
+  if (tweet) {
+    res.status(200).json(tweet);
+  } else {
+    res.status(404).json({ message: `Tweet id(${id}) not found` });
+  }
 }
 
-export async function createTweet(req, res, err) {
-  const tweet = req.body;
-  tweets.unshift(tweet);
-  res.status(201).json(tweets);
+export function createTweet(req, res, err) {
+  const { text, username } = req.body;
+  const tweet = tweetRepository.create(text, username);
+  res.status(201).json(tweet);
 }
 
-export async function updateTweet(req, res, next) {
+export function updateTweet(req, res, next) {
   const text = req.body.text;
   const id = req.params.id;
-  const data = tweets.find((t) => t.id == id);
-  data.text = text;
-  res.status(201).json(data);
+  const tweet = tweetRepository.update(id, text);
+  if (tweet) {
+    tweet.text = text;
+    res.status(200).json(tweet);
+  } else {
+    res.status(404).json({ message: `Tweet id(${id}) not found` });
+  }
 }
 
-export async function deleteTweet(req, res, next) {
+export function deleteTweet(req, res, next) {
   const id = req.params.id;
-  const num = tweets.findIndex((t) => t.id == id);
-  tweets.splice(num, 1);
+  tweetRepository.remove(id);
   res.sendStatus(204);
 }

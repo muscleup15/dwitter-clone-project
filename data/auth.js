@@ -1,10 +1,10 @@
-//$2a$10$deafqrm8tMe2OE0vMr3ZGOHN0M8JYoiLWpccHr5LQew1EUyxIX8BW : abcd1234
+//$2a$10$K2JT5JlH9Q9vUTd7Ax4VFeHtthN3wmc79DwhddlY8vCxrhEMEGjka
 
 export let users = [
   {
     id: '1',
     username: 'kwanghwi',
-    password: '$2a$10$deafqrm8tMe2OE0vMr3ZGOHN0M8JYoiLWpccHr5LQew1EUyxIX8BW',
+    password: '$2a$10$K2JT5JlH9Q9vUTd7Ax4VFeHtthN3wmc79DwhddlY8vCxrhEMEGjka',
     name: 'kwanghwi',
     email: 'ellie@gmail.com',
     url: '',
@@ -24,8 +24,12 @@ export async function findByUserName(username) {
   return user;
 }
 
+export async function findByID(id) {
+  const user = users.find((user) => user.id == id);
+  return user;
+}
 export async function createUser(userinfo) {
   const user = { ...userinfo, id: Date.now().toString() };
   users.unshift(user);
-  return user;
+  return user.id;
 }

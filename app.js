@@ -10,7 +10,7 @@ app.use((req, res, next) => {
   return res.status(404).send('Not Found');
 });
 app.use((err, req, res, next) => {
-  console.error(error);
+  console.error(err);
   res.sendStatus(500);
 });
 

@@ -1,6 +1,7 @@
 import express from 'express';
 import 'express-async-errors';
 import * as authController from '../controller/auth.js';
+import isAuth from '../middleware/auth.js';
 const route = express.Router();
 route.use(express.json());
 
@@ -10,7 +11,5 @@ route.post('/signin', authController.signin);
 
 route.post('/signup', authController.signup);
 
-route.get('/me', (req, res, err) => {
-  res.sendStatus(200);
-});
+route.get('/me', isAuth, authController.me);
 export default route;

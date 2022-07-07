@@ -3,7 +3,6 @@ import 'express-async-errors';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import * as userRepository from '../data/auth.js';
-import { users } from '../data/auth.js';
 const route = express.Router();
 route.use(express.json());
 
@@ -19,7 +18,6 @@ export async function signup(req, res, err) {
     return res.status(409).json({ msg: `username ${username} exists` });
   }
   const hashed = await bcrypt.hash(password, saltRounds);
-  console.log(hashed);
   const userId = await userRepository.createUser({
     username,
     password: hashed,
@@ -42,9 +40,17 @@ export async function signin(req, res, err) {
     res.status(401).json({ message: `Invalid id or password` });
   }
   const token = createJwtToken(found.id);
-  res.status(200).json({ token, username });
+  res.status(201).json({ token, username });
 }
 
-function createJwtToken(userId) {
-  return jwt.sign(userId, secretkey, { expiresIn: expireDate });
+export async function me(req, res, err) {
+  const user = await userRepository.findByID(req.userid);
+  if (!user) {
+    return res.status(404).json({ message: 'Usernot found' });
+  }
+  res.status(200).json({ token: req.token, username: user.username });
+}
+
+function createJwtToken(userid) {
+  return jwt.sign({ userid }, secretkey, { expiresIn: expireDate });
 }
